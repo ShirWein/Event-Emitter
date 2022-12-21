@@ -2,7 +2,7 @@
 //* Define events interface:
 interface Events {
     [key: string]: Function[]; // using an array because there could be more than one subscriber for each event.
-  }
+}
 
 class EventEmitter {
     public events: Events;
@@ -25,23 +25,19 @@ class EventEmitter {
       }
 }
 
-
-
-function logKeydown (event) {
-    console.log('keyboard pressed: ' + event.key);
+function logKeydown (eventName) {
+    console.log('keyboard pressed: ' + eventName.key);
 }
-function alertKeydown (event) {
-    alert('keyboard pressed: ' + event.key);
+function alertKeydown (eventName) {
+    alert('keyboard pressed: ' + eventName.key);
 }
 
-const logKeydownSubscription =  new EventEmitter;
+//* Check:
+
+const logKeydownSubscription = new EventEmitter;
 logKeydownSubscription.subscribe('keydown', logKeydown);
 
 const alertKeydownSubscription = new EventEmitter;
-alertKeydownSubscription.subscribe('keydown', alertKeydown);
-
-EventEmitter.emit('keydown', {key: 'Enter'});
-
-alertKeydownSubscription.unsubcribe();
-logKeydownSubscription.unsubscribe();
-
+const a = alertKeydownSubscription.subscribe('keydown', alertKeydown);
+a.unsubscribe();
+logKeydownSubscription.emit('keydown', {key: 'Enter'});
